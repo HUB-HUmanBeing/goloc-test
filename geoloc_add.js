@@ -1,38 +1,24 @@
 /**
  * Created by banquo on 03/07/17.
  */
-// $(function() {
-//   $.ajaxSetup({
-// crossOrigin: true
-// });
-  $("#search").click(function() {
+$(function() {
 
-    var data = $("#adress").val();
+    $("#search").click(function () {
 
-    // var formdata = (window.FormData) ? new FormData($form[0]) : null;
-    // var data = (formdata !== null) ? formdata : $form.serialize();
-    // alert(data);
+        var address = $("#adress").val();
+        var url = "http://nominatim.openstreetmap.org/search/"+ address +"?format=json&addressdetails=1&limit=1";
+        $.getJSON(url, function (data) {
+            console.log(data);
+            var lat = data[0].lat ;
+            var lon = data[0].lon ;
+            var city = data[0].address.city ;
+            var country = data[0].address.country;
+            $('#lat').val(lat);
+            $('#lon').val(lon);
+            $('#city').val(city);
+            $('#country').val(country);
 
-    var url = "http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=" + data + "&limit=1";
-    alert(url);
-    // $.getJSON("http://nominatim.openstreetmap.org/?format=json&json_callback=cbaddressdetails=1&q=" + data + "&format=json&limit=1").done(function(cb){
+        });
 
-    $.ajax({
-         url:"http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=" + data + "&limit=1",
-         dataType: 'json', // Notice! JSONP <-- P (lowercase)
-         success:function(json){
-             // do stuff with json (in this case an array)
-             console.log(json);
-             alert("Success");
-         },
-         error:function(){
-             alert("Error");
-         }
     });
-// $.getJSON(url, null, function(data) {
-//   $( '.result' ).html(data);
-// });
-//     });
-
-
 });
